@@ -21,6 +21,7 @@ agave-unstable-api = []
 
 [dependencies]
 agave-reserved-account-keys = { workspace = true }
+base64 = { workspace = true }
 bincode = { workspace = true }
 bytes = { workspace = true }
 bzip2 = { workspace = true }
@@ -29,7 +30,6 @@ flate2 = { workspace = true }
 futures = { workspace = true }
 goauth = { workspace = true }
 http = { workspace = true }
-hyper-http-proxy = { workspace = true, default-features = false, features = ["native-tls"] }
 hyper-util = { workspace = true, features = ["client-legacy"] }
 log = { workspace = true }
 # openssl is a dependency of the goauth and smpl_jwt crates, but explicitly

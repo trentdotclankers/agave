@@ -24,4 +24,6 @@ requested using the provided credentials.
 #### Forward proxy
 Export `BIGTABLE_PROXY` environment variable for the forward proxy as you would
 for `HTTP_PROXY`. This will establish a tunnel through the forward proxy for
-gRPC traffic (the tunneled traffic will still use TLS as normal).
+gRPC traffic (the tunneled traffic will still use TLS as normal). Use an HTTP
+proxy URI such as `http://proxy-host:8080` or
+`http://user:password@proxy-host:8080`.

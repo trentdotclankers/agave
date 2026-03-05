@@ -5,6 +5,7 @@ use {
         CredentialType,
         access_token::{AccessToken, Scope},
         compression::{compress_best, decompress},
+        proxy_connector::ProxyConnector,
         root_ca_certificate,
     },
     log::*,
@@ -231,16 +232,11 @@ impl BigTableConnection {
                 http.set_nodelay(true);
                 let channel = match std::env::var("BIGTABLE_PROXY") {
                     Ok(proxy_uri) => {
-                        let proxy = hyper_http_proxy::Proxy::new(
-                            hyper_http_proxy::Intercept::All,
-                            proxy_uri
-                                .parse::<http::Uri>()
-                                .map_err(|err| Error::InvalidUri(proxy_uri, err.to_string()))?,
-                        );
-                        let mut proxy_connector =
-                            hyper_http_proxy::ProxyConnector::from_proxy(http, proxy)?;
-                        // tonic handles TLS as a separate layer
-                        proxy_connector.set_tls(None);
+                        let proxy_connector =
+                            ProxyConnector::new(proxy_uri.parse::<http::Uri>().map_err(|err| {
+                                Error::InvalidUri(proxy_uri.clone(), err.to_string())
+                            })?)
+                            .map_err(|err| Error::InvalidUri(proxy_uri, err))?;
                         endpoint.connect_with_connector_lazy(proxy_connector)
                     }
                     _ => endpoint.connect_with_connector_lazy(http),
