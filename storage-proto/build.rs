@@ -18,10 +18,11 @@ fn main() -> Result<(), std::io::Error> {
     for proto_file in &proto_files {
         let proto = proto_base_path.join(proto_file);
         println!("cargo:rerun-if-changed={}", proto.display());
+        println!("cargo:rerun-if-changed=build.rs");
         protos.push(proto);
     }
 
-    tonic_build::configure()
+    tonic_prost_build::configure()
         .build_client(true)
         .build_server(false)
         .type_attribute(
@@ -32,5 +33,5 @@ fn main() -> Result<(), std::io::Error> {
             "InstructionErrorType",
             "#[cfg_attr(test, derive(enum_iterator::Sequence))]",
         )
-        .compile(&protos, &[proto_base_path])
+        .compile_protos(&protos, &[proto_base_path])
 }

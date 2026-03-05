@@ -29,8 +29,8 @@ flate2 = { workspace = true }
 futures = { workspace = true }
 goauth = { workspace = true }
 http = { workspace = true }
-hyper = { workspace = true }
-hyper-proxy = { workspace = true }
+hyper-http-proxy = { workspace = true, default-features = false, features = ["native-tls"] }
+hyper-util = { workspace = true, features = ["client-legacy"] }
 log = { workspace = true }
 # openssl is a dependency of the goauth and smpl_jwt crates, but explicitly
 # declare it here as well to activate the "vendored" feature that builds OpenSSL
@@ -53,6 +53,7 @@ solana-transaction-status = { workspace = true }
 thiserror = { workspace = true }
 tokio = { workspace = true }
 tonic = { workspace = true, features = ["tls-ring", "transport"] }
+tonic-prost = { workspace = true }
 zstd = { workspace = true }
 
 [dev-dependencies]
